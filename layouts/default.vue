@@ -28,9 +28,9 @@ import Cart from '@/pages/cart'
 
 export default {
   components: { Cart },
-  data() {
-    return { toggle: false }
-  },
+  data: () => ({
+    toggle: false
+  }),
   computed: {
       destination() {
         return (this.$route.name == 'products') ? 'cart' : 'products'
@@ -41,7 +41,7 @@ export default {
   },
   methods: {
     toggleFavorites() {
-      this.toggle ? this.$store.dispatch('products/fetchProducts') : this.$store.dispatch('products/fetchFavoriteProducts')
+      this.toggle ? this.$store.dispatch('products/fetchProducts', 0) : this.$store.dispatch('products/fetchFavoriteProducts')
       this.toggle = !this.toggle
     }
   }

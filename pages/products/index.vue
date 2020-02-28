@@ -4,7 +4,7 @@
             <p class="font-bold">Please wait!</p>
             <p class="text-sm">Loading data...</p>
             </div>
-        <section class="flex content-start flex-wrap rounded">
+        <section class="flex content-start flex-wrap rounded" v-if="products.length > 0">
             <Product v-for="product in products" :key="product.id" :product="product" />
         </section>
     </div>
@@ -22,7 +22,25 @@ export default {
         }
     },
     mounted() {
+        window.addEventListener('scroll', () => this.bottom = this.bottomVisible())
         this.$store.dispatch('products/fetchProducts')
+    },
+    methods: {
+        bottomVisible() {
+            const scrollY = window.scrollY
+            const visible = document.documentElement.clientHeight
+            const pageHeight = document.documentElement.scrollHeight
+            const bottomOfPage = visible + scrollY >= pageHeight
+            return bottomOfPage || pageHeight < visible
+        }
+    },
+    data: () => ({ bottom: false }),
+    watch: {
+        bottom(bottom) {
+            if (bottom) {
+                this.$store.dispatch('products/fetchProducts')
+            }
+        }
     }
 }
 </script>

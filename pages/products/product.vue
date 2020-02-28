@@ -22,7 +22,7 @@
         </div>
         <div class="container flex justify-between pt-2">
             <div class="px-6">
-                <p class="text-blue-600 text-xl leading-none">{{ product.price.toFixed(2) }} €</p>
+                <p class="text-blue-600 text-xl leading-none">{{ product.price }} €</p>
                 <p class="text-sm" v-if="product.stock > 0">{{ product.stock }} left</p>
                 <p class="text-sm text-red-600" v-else>Out of stock</p>
             </div>

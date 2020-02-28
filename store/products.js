@@ -3,12 +3,19 @@ import axios from 'axios'
 const apiURL = 'http://localhost:3001'
 
 const state = () => ({
-    products: [] 
+    products: []
 })
+
+let count = 0
 
 const mutations = {
     'FETCH_PRODUCTS' (state, payload) {
+        state.products = [...state.products, ...payload]
+        count += 10
+    },
+    'FETCH_FAVORITE_PRODUCTS' (state, payload) {
         state.products = payload
+        count = 0
     },
     'UPDATE_FAVORITE_PRODUCT' (state, payload) {
         const newFavorite = (payload.favorite == 0) ? "1" : 0
@@ -40,7 +47,7 @@ const mutations = {
 const actions = {
     fetchProducts({ commit }) {
         axios.get(apiURL + '/grocery').then(res => {
-            commit('FETCH_PRODUCTS', res.data)
+            commit('FETCH_PRODUCTS', res.data.slice(count, count + 10))
         })
     },
     updateFavoriteProduct({ commit }, product) {
@@ -57,7 +64,7 @@ const actions = {
     },
     fetchFavoriteProducts({ commit }) {
         axios.get(apiURL + '/grocery?favorite=1').then(res => {
-            commit('FETCH_PRODUCTS', res.data)
+            commit('FETCH_FAVORITE_PRODUCTS', res.data)
         })
     }
 }
